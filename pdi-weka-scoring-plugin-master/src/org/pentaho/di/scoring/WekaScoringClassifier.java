@@ -29,6 +29,10 @@ import weka.classifiers.UpdateableClassifier;
 
 /**
  * Subclass of WekaScoringModel that encapsulates a Classifier.
+ * 
+ * PT-BR
+ * 
+ * SubClass do WekaScoringModel que encapsula um Classificador
  *
  * @author  Mark Hall (mhall{[at]}pentaho.org)
  * @version 1.0
@@ -36,10 +40,13 @@ import weka.classifiers.UpdateableClassifier;
 class WekaScoringClassifier extends WekaScoringModel {
   
   // The encapsulated classifier
+  // O classificador encapsulado.
   private Classifier m_model;
   
   /**
    * Creates a new <code>WekaScoringClassifier</code> instance.
+   * 
+   * Criar uma nova istancia de WekaScoringClassifier
    *
    * @param model the Classifier
    */
@@ -49,6 +56,8 @@ class WekaScoringClassifier extends WekaScoringModel {
   
   /**
    * Set the Classifier model
+   * 
+   * Seta o modelo de Classificao
    *
    * @param model a Classifier
    */
@@ -58,6 +67,8 @@ class WekaScoringClassifier extends WekaScoringModel {
 
   /**
    * Get the weka model
+   * 
+   * Pega o modelo Weka
    *
    * @return the Weka model as an object
    */
@@ -69,21 +80,36 @@ class WekaScoringClassifier extends WekaScoringModel {
    * Return a classification (number for regression problems
    * or index of a class value for classification problems).
    *
+   * PT-BR
+   * 
+   * Retorna uma classificação (numero de problemas de regressão
+   * ou indice de um valor da classe para problemas de classificação).
+   * 
    * @param inst the Instance to be classified (predicted)
+   *             a Instance oara ser classificado (predito)
    * @return the prediction (either a number for regression or
    * the index of a class-value for classification) as a double
+   *             Predito (ou um numero para regressao ou
+   * o indice do valor de classe para classificação) como um double.  
    * @exception Exception if an error occurs
-   */
+   *                      se ocorrer um erro
+   * 
+   * */
   public double classifyInstance(Instance inst) throws Exception {
     return m_model.classifyInstance(inst);
   }
 
   /**
    * Update (if possible) the model with the supplied instance
+   * 
+   * Atualização (se possivel) o model com a instancia fornecida
    *
    * @param inst the Instance to update with
+   *            a Instancia para atualizar  
    * @return true if the update was updated successfully
+   *              Se a atualização ocorrer com sucesso
    * @exception Exception if an error occurs
+   *                      se ocorrer um erro
    */
   public boolean update(Instance inst) throws Exception {
     if (isUpdateableModel()) {
@@ -97,10 +123,17 @@ class WekaScoringClassifier extends WekaScoringModel {
 
   /**
    * Return a probability distribution (over classes).
+   * 
+   * PT-BR
+   * 
+   * Retorna uma probabilidade de distribuição (através de classes)
    *
    * @param inst the Instance to be predicted
+   *             a Instance para ser predita
    * @return a probability distribution
+   *           probabilidade de distribuição
    * @exception Exception if an error occurs
+   *                      se ocorrer um erro
    */  
   public double[] distributionForInstance(Instance inst)
     throws Exception {
@@ -109,6 +142,10 @@ class WekaScoringClassifier extends WekaScoringModel {
 
   /**
    * Returns true. Classifiers are supervised methods.
+   * 
+   * PT-BR
+   * 
+   * Retorna verdadeiro. Classificadores são métodos fiscalizados.
    *
    * @return true
    */
@@ -119,8 +156,14 @@ class WekaScoringClassifier extends WekaScoringModel {
   /**
    * Returns true if the classifier can be updated
    * incrementally
+   * 
+   * PT-BR
+   * 
+   * Retorna verdadeiro se o classificador pode ser atualizado 
+   * de forma incremental
    *
    * @return true if the classifier can be updated incrementally
+   *              se o classificador pode ser atualizado de forma incremental
    */
   public boolean isUpdateableModel() {
     if (m_model instanceof UpdateableClassifier) {
@@ -133,6 +176,11 @@ class WekaScoringClassifier extends WekaScoringModel {
   /**
    * If the model is a PMMLClassifier, tell it that
    * the scoring run has finished. 
+   * 
+   * PT-BR
+   * 
+   * Se o modelo é um PMMLClassifier, diz que a 
+   * execucao foi concluida
    */
   public void done() {
     if (m_model instanceof PMMLClassifier) {
@@ -142,8 +190,13 @@ class WekaScoringClassifier extends WekaScoringModel {
 
   /**
    * Returns the textual description of the Classifier's model.
+   * 
+   * PT-BR
+   * 
+   * Retorna um descricao em texto do modelo de Classificao
    *
    * @return the Classifier's model as a String
+   *             Modelos  de classificação como uma String
    */
   public String toString() {
     return m_model.toString();
@@ -152,10 +205,18 @@ class WekaScoringClassifier extends WekaScoringModel {
   /**
    * Batch scoring method.
    * 
+   * PT-BR
+   * 
+   * Carga de metodos scoring(registrado?)
+   * 
    * @param insts the instances to score
-   * @return an array of predictions (index of the predicted class label for
+   *              A instancia para socre 
+     * @return an array of predictions (index of the predicted class label for
    * each instance)
+   *            Lista de previsões (indice do label de classe previsto para cada
+   * instancia)
    * @throws Exception if a problem occurs
+   *                   se ocorrer um erro
    */
   public double[] classifyInstances(Instances insts) throws Exception {
     double[][] preds = distributionsForInstances(insts);
@@ -177,9 +238,16 @@ class WekaScoringClassifier extends WekaScoringModel {
   /**
    * Batch scoring method
    * 
+   * PT-BR
+   *
+   * Carga de metodos scoring(registrado?)
+   * 
    * @param insts the instances to get predictions for
-   * @return an array of probability distributions, one for each instance
+   *              A instancia para pegar previsoes
+     * @return an array of probability distributions, one for each instance
+   *            Lista de previsões distribuidas, uma para cada instancia
    * @throws Exception if a problem occurs
+   *                   se ocorrer um erro
    */
   public double[][] distributionsForInstances(Instances insts) throws Exception {
     if (!isBatchPredictor()) {
@@ -193,8 +261,16 @@ class WekaScoringClassifier extends WekaScoringModel {
    * Returns true if the encapsulated Weka model can produce 
    * predictions in a batch.
    * 
+   * PT-BR
+   * 
+   * Retorna verdadeiro se o modelo Wela encapsulado pode produzir
+   * previsoes em um lote.
+   * 
    * @return true if the encapsulated Weka model can produce 
    * predictions in a batch
+   *                se o modelo Weka encapsulado pode produzir
+   * previsoes em um lote
+   * 
    */
   public boolean isBatchPredictor() {
     return (m_model instanceof BatchPredictor);

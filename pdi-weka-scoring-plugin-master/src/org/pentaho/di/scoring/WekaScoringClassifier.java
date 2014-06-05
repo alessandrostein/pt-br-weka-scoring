@@ -46,9 +46,10 @@ class WekaScoringClassifier extends WekaScoringModel {
   /**
    * Creates a new <code>WekaScoringClassifier</code> instance.
    * 
-   * Criar uma nova istancia de WekaScoringClassifier
+   * Criar uma nova istância de WekaScoringClassifier
    *
    * @param model the Classifier
+   *              o Classificador    
    */
   public WekaScoringClassifier(Object model) {
     super(model);
@@ -57,7 +58,7 @@ class WekaScoringClassifier extends WekaScoringModel {
   /**
    * Set the Classifier model
    * 
-   * Seta o modelo de Classificao
+   * Seta o modelo de Classificacao
    *
    * @param model a Classifier
    */
@@ -86,7 +87,7 @@ class WekaScoringClassifier extends WekaScoringModel {
    * ou indice de um valor da classe para problemas de classificação).
    * 
    * @param inst the Instance to be classified (predicted)
-   *             a Instance oara ser classificado (predito)
+   *             a Instance para ser classificado (predito)
    * @return the prediction (either a number for regression or
    * the index of a class-value for classification) as a double
    *             Predito (ou um numero para regressao ou
@@ -102,7 +103,7 @@ class WekaScoringClassifier extends WekaScoringModel {
   /**
    * Update (if possible) the model with the supplied instance
    * 
-   * Atualização (se possivel) o model com a instancia fornecida
+   * Atualização (se possivel) o modelo com a instancia fornecida
    *
    * @param inst the Instance to update with
    *            a Instancia para atualizar  
@@ -193,7 +194,7 @@ class WekaScoringClassifier extends WekaScoringModel {
    * 
    * PT-BR
    * 
-   * Retorna um descricao em texto do modelo de Classificao
+   * Retorna um descrição em texto do modelo de Classifição
    *
    * @return the Classifier's model as a String
    *             Modelos  de classificação como uma String
@@ -207,10 +208,10 @@ class WekaScoringClassifier extends WekaScoringModel {
    * 
    * PT-BR
    * 
-   * Carga de metodos scoring(registrado?)
+   * Lote de metodos scoring(registrado?)
    * 
    * @param insts the instances to score
-   *              A instancia para socre 
+   *              A instancia para score 
      * @return an array of predictions (index of the predicted class label for
    * each instance)
    *            Lista de previsões (indice do label de classe previsto para cada
@@ -240,12 +241,12 @@ class WekaScoringClassifier extends WekaScoringModel {
    * 
    * PT-BR
    *
-   * Carga de metodos scoring(registrado?)
+   * Lote de métodos scoring(registrado?)
    * 
    * @param insts the instances to get predictions for
-   *              A instancia para pegar previsoes
+   *              A instância para pegar previsões
      * @return an array of probability distributions, one for each instance
-   *            Lista de previsões distribuidas, uma para cada instancia
+   *            Lista de previsões distribuidas, uma para cada instância
    * @throws Exception if a problem occurs
    *                   se ocorrer um erro
    */
@@ -263,13 +264,13 @@ class WekaScoringClassifier extends WekaScoringModel {
    * 
    * PT-BR
    * 
-   * Retorna verdadeiro se o modelo Wela encapsulado pode produzir
-   * previsoes em um lote.
+   * Retorna verdadeiro se o modelo Weka encapsulado pode produzir
+   * previsões em um lote.
    * 
    * @return true if the encapsulated Weka model can produce 
    * predictions in a batch
    *                se o modelo Weka encapsulado pode produzir
-   * previsoes em um lote
+   * previsões em um lote
    * 
    */
   public boolean isBatchPredictor() {

@@ -142,6 +142,13 @@ public class WekaScoring extends BaseStep implements StepInterface {
    * User may also opt to supply a default model to be used when there is none
    * specified in the field value.
    * 
+   * PT-BR
+   * 
+   * Seta o modelo para usar a partir do campo do caminho fornecido por um usuario  
+   * atraves do fluxo de dados de entrada. Usuario pode optar por ter modelos carregados
+   * em cache de memoria. Usuario pode tambem optar por  fornecer um modelo padrao 
+   * para usar quando nao encontrar nenhum campo com valor especifico.
+   * 
    * @param row
    * @throws KettleException
    */
@@ -153,6 +160,7 @@ public class WekaScoring extends BaseStep implements StepInterface {
 
     if (Const.isEmpty(modelFileName)) {
       // see if there is a default model to use
+      // Verifique se possui um modelo padrao a ser usado.
       WekaScoringModel defaultM = m_data.getDefaultModel();
       if (defaultM == null) {
         throw new KettleException(BaseMessages.getString(WekaScoringMeta.PKG,
@@ -168,6 +176,7 @@ public class WekaScoring extends BaseStep implements StepInterface {
 
     if (resolvedName.equals(m_lastRowModelFile)) {
       // nothing to do, just return
+      // Nada para fazer, apenas retorne.
       return;
     }
 
@@ -185,6 +194,7 @@ public class WekaScoring extends BaseStep implements StepInterface {
     }
 
     // load the model
+    // Carrega o modelo
     logDebug(BaseMessages.getString(WekaScoringMeta.PKG,
         "WekaScoring.Debug.LoadingModelUsingFieldValue") //$NON-NLS-1$
         + " " //$NON-NLS-1$
@@ -212,6 +222,7 @@ public class WekaScoring extends BaseStep implements StepInterface {
      */
 
     // Load the model
+    // Carrega o modelo
     WekaScoringModel model = null;
     try {
       model = WekaScoringData.loadSerializedModel(modelFileName,
@@ -230,6 +241,10 @@ public class WekaScoring extends BaseStep implements StepInterface {
 
   /**
    * Process an incoming row of data.
+   * 
+   * PT-BR
+   * 
+   * Processar uma linha de entradada de dados  
    * 
    * @param smi a <code>StepMetaInterface</code> value
    * @param sdi a <code>StepDataInterface</code> value
@@ -257,9 +272,11 @@ public class WekaScoring extends BaseStep implements StepInterface {
       }
 
       // see if we have an incremental model that is to be saved somewhere.
+      // Verifique se tenha um modelo incrementar que possa estar salvo em algum lugar. 
       if (!m_meta.getFileNameFromField() && m_meta.getUpdateIncrementalModel()) {
         if (!Const.isEmpty(m_meta.getSavedModelFileName())) {
           // try and save that sucker...
+          // Testar e Salvar que sucker ...
           try {
             String modName = environmentSubstitute(m_meta
                 .getSavedModelFileName());
@@ -288,6 +305,7 @@ public class WekaScoring extends BaseStep implements StepInterface {
 
       if (m_meta.getFileNameFromField()) {
         // clear the main model
+        // Limpar o modelo principal
         m_data.setModel(null);
       } else {
         m_data.getModel().done();
@@ -298,6 +316,7 @@ public class WekaScoring extends BaseStep implements StepInterface {
     }
 
     // Handle the first row
+    // Manipula a primeira linha.
     if (first) {
       first = false;
 
@@ -324,6 +343,7 @@ public class WekaScoring extends BaseStep implements StepInterface {
         }
 
         // set the default model
+        // Seta o modelo padrao
         if (!Const.isEmpty(m_meta.getSerializedModelFileName())) {
           WekaScoringModel defaultModel = setModel(m_meta
               .getSerializedModelFileName());
@@ -341,6 +361,7 @@ public class WekaScoring extends BaseStep implements StepInterface {
         }
 
         // set the main model from this row
+        // Seta o modelo principal para esta linha
         setModelFromField(r);
         logBasic(BaseMessages.getString(WekaScoringMeta.PKG,
             "WekaScoring.Message.SourcingModelNamesFromInputField", //$NON-NLS-1$
@@ -348,8 +369,10 @@ public class WekaScoring extends BaseStep implements StepInterface {
       } else if (m_meta.getModel() == null
           || !Const.isEmpty(m_meta.getSerializedModelFileName())) {
         // If we don't have a model, or a file name is set, then load from file
+        // Se nao tem um modelo, ou o nome do arquivo esta setado, depos carrega o arquivo.
 
         // Check that we have a file to try and load a classifier from
+        // Verificar  que tenha um arquivo para testar e carregar uma classificao
         if (Const.isEmpty(m_meta.getSerializedModelFileName())) {
           throw new KettleException(BaseMessages.getString(WekaScoringMeta.PKG,
               "WekaScoring.Error.NoFilenameToLoadModelFrom")); //$NON-NLS-1$
@@ -358,6 +381,7 @@ public class WekaScoring extends BaseStep implements StepInterface {
         setModel(m_meta.getSerializedModelFileName());
       } else if (m_meta.getModel() != null) {
         // copy the primary model over to the data class
+        // Copia o primeiro modelo sobre a classe de dados
         try {
           SerializedObject so = new SerializedObject(m_meta.getModel());
           WekaScoringModel defaultModel = (WekaScoringModel) so.getObject();
@@ -369,7 +393,9 @@ public class WekaScoring extends BaseStep implements StepInterface {
       }
 
       // Check the input row meta data against the instances
+      // Verifica a linha de entrada de meta dados contra a instancia.
       // header that the classifier was trained with
+      // Cabecalho que a classificao  com quem foi treinado.
       try {
         Instances header = m_data.getModel().getHeader();
         m_data.mapIncomingRowMetaData(header, getInputRowMeta(),
@@ -380,6 +406,7 @@ public class WekaScoring extends BaseStep implements StepInterface {
       }
 
       // Determine the output format
+      // Determina o formato da saida.
       m_meta.getFields(m_data.getOutputRowMeta(), getStepname(), null, null,
           this);
 
@@ -419,6 +446,7 @@ public class WekaScoring extends BaseStep implements StepInterface {
     } // end (if first)
 
     // Make prediction for row using model
+    // Faz uma previsao para a linha usando o modelo. 
     try {
       if (m_meta.getFileNameFromField()) {
         setModelFromField(r);
@@ -428,6 +456,7 @@ public class WekaScoring extends BaseStep implements StepInterface {
           && !m_meta.getFileNameFromField()) {
         try {
           // add current row to batch
+          // Adicionar atual linha no lote
           m_batch.add(r);
 
           if (m_batch.size() == m_batchScoringSize) {
@@ -459,6 +488,7 @@ public class WekaScoring extends BaseStep implements StepInterface {
 
   protected void outputBatchRows() throws Exception {
     // get predictions for the batch
+    // Busca as previsaos para o lote
     Object[][] outputRows = m_data.generatePredictions(getInputRowMeta(),
         m_data.getOutputRowMeta(), m_batch, m_meta);
 
@@ -468,16 +498,22 @@ public class WekaScoring extends BaseStep implements StepInterface {
     }
 
     // output the rows
+    // Saida das linhas
     for (Object[] row : outputRows) {
       putRow(m_data.getOutputRowMeta(), row);
     }
 
     // reset batch
+    // Limpa o lote
     m_batch.clear();
   }
 
   /**
    * Initialize the step.
+   * 
+   * PT-BR
+   * 
+   * Inicializa o step (passo)
    * 
    * @param smi a <code>StepMetaInterface</code> value
    * @param sdi a <code>StepDataInterface</code> value

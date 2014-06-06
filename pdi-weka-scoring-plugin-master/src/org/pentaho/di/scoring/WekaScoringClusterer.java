@@ -30,6 +30,10 @@ import weka.filters.unsupervised.attribute.Remove;
 
 /**
  * Subclass of WekaScoringModel that encapsulates a Clusterer.
+ * 
+ * PT-BR
+ * 
+ * Classe filha de WekaScoringModel que encapsula um Clusterer
  *
  * @author  Mark Hall (mhall{[at]}pentaho.org)
  * @version 1.0
@@ -37,15 +41,21 @@ import weka.filters.unsupervised.attribute.Remove;
 class WekaScoringClusterer extends WekaScoringModel {
   
   // The encapsulated clusterer
+  // O Clusterer encapsulado
   private Clusterer m_model;
 
   // Any attributes to ignore
+  // Alguns atributos sao ignorados
   private Remove m_ignoredAtts;
 
   private String m_ignoredString;
   
   /**
    * Creates a new <code>WekaScoringClusterer</code> instance.
+   * 
+   * PT-BR
+   * 
+   * Cria uma nova instancia de WekaScoringClusterer
    *
    * @param model the Clusterer
    */
@@ -57,8 +67,15 @@ class WekaScoringClusterer extends WekaScoringModel {
    * Sets up a Remove filter to remove attributes that
    * are to be ignored by the clusterer. setHeader must
    * be called before this method.
+   * 
+   * PT-BR
+   * 
+   * Configura uma remocao de filtro para remover atributos que
+   * sao ignorados pelo clusterer. O metodo setHeader necessario
+   * ser chamado antes deste metodo.
    *
    * @param attsToIgnore any attributes to ignore during the scoring process
+   *                     Qualquer atributo ignorado durante o processo scoring
    */
   public void setAttributesToIgnore(int[] attsToIgnore) throws Exception {
     Instances headerI = getHeader();
@@ -78,6 +95,10 @@ class WekaScoringClusterer extends WekaScoringModel {
   
   /**
    * Set the Clusterer model
+   * 
+   * PT-BR
+   * 
+   * Define o modelo do Clusterer
    *
    * @param model a Clusterer
    */
@@ -87,8 +108,13 @@ class WekaScoringClusterer extends WekaScoringModel {
 
   /**
    * Get the weka model
+   * 
+   * PT-BR
+   * 
+   * Retorna o modelo Weka
    *
    * @return the Weka model as an object
+   *         O modelo Weka como objeto  
    */
   public Object getModel() {
     return m_model;
@@ -97,10 +123,18 @@ class WekaScoringClusterer extends WekaScoringModel {
   /**
    * Return a classification (cluster that the test instance
    * belongs to)
+   * 
+   * PT-BR
+   * 
+   * Retorna uma classificao (cluster que a instancia de teste 
+   * pertece)
    *
    * @param inst the Instance to be clustered (predicted)
+   *             a Instancia a ser agrupada (prevista)
    * @return the cluster number
+   *         o numero agrupado
    * @exception Exception if an error occurs
+   *            Exceção se ocorrer um erro
    */
   public double classifyInstance(Instance inst) throws Exception {
     if (m_ignoredAtts != null) {
@@ -111,13 +145,21 @@ class WekaScoringClusterer extends WekaScoringModel {
 
   /**
    * Update (if possible) the model with the supplied instance
+   * 
+   * PT-BR
+   * 
+   * Atualiza (se possivel) o modelo fornecido pela instancia.
    *
    * @param inst the Instance to update with
+   *             a Istance para atualizar
    * @return true if the update was updated successfully
+   *              se a atualizacao ocorreu com sucesso
    * @exception Exception if an error occurs
+   *            Exceção se ocorrer um erro
    */
   public boolean update(Instance inst) throws Exception {
     // Only cobweb is updateable at present
+    // So cobweb(?) e atualizado no momento
     if (isUpdateableModel()) {
       if (m_ignoredAtts != null) {
         inst = applyFilter(inst);
@@ -132,10 +174,17 @@ class WekaScoringClusterer extends WekaScoringModel {
   
   /**
    * Return a probability distribution (over clusters).
+   * 
+   * PT-BR
+   * 
+   * Retorna a probabilidade de distribuicao (sobre agrupamento)
    *
    * @param inst the Instance to be predicted
+   *             a Instancia a ser prevista 
    * @return a probability distribution
+   *         a probabilidade de distribuicao
    * @exception Exception if an error occurs
+   *            Exceção se ocorrer um erro
    */  
   public double[] distributionForInstance(Instance inst)
     throws Exception {
@@ -157,9 +206,14 @@ class WekaScoringClusterer extends WekaScoringModel {
 
   /**
    * Returns false. Clusterers are unsupervised methods.
+   * 
+   * PT-BR
+   * 
+   * Retorna falso. Clusterers sao metodos sem supervisao
    *
    * @return false
    */
+  
   public boolean isSupervisedLearningModel() {
     return false;
   }
@@ -167,6 +221,11 @@ class WekaScoringClusterer extends WekaScoringModel {
   /**
    * Returns false. No clusterers in Weka are 
    * incremental... yet
+   * 
+   * PT-BR
+   * 
+   * Retorna falso. Nao agrupado no Weka sao 
+   * incremental... ainda
    *
    * @return false
    */
@@ -181,8 +240,14 @@ class WekaScoringClusterer extends WekaScoringModel {
   /**
    * Returns true if the wrapped clusterer can produce
    * cluster membership probability estimates
-   *
+   * 
+   * PT-BR
+   * 
+   * Retorna verdadeiro se o agrupamento embrulhado pode produzir
+   * estimativas de probabilidade de associacao ao agrupamento.
+   * 
    * @return true if probability estimates can be produced
+   *              se estimativa de probabilidade pode ser produzido
    */
   public boolean canProduceProbabilities() {
     if (m_model instanceof DensityBasedClusterer) {
@@ -194,9 +259,14 @@ class WekaScoringClusterer extends WekaScoringModel {
   /**
    * Returns the number of clusters that the encapsulated
    * Clusterer has learned.
+   * 
+   * Retorna o numero do agrupamento que e encapsulado
+   * Clusterer aprendeu
    *
    * @return the number of clusters in the model.
+   *         o numero de agrupamento no modelo   
    * @exception Exception if an error occurs
+   *            Excecao se ocorrer um erro
    */
   public int numberOfClusters() throws Exception {
     return m_model.numberOfClusters();
@@ -205,7 +275,12 @@ class WekaScoringClusterer extends WekaScoringModel {
   /**
    * Returns the textual description of the Clusterer's model.
    *
+   * PT-BR
+   * 
+   * Retorna uma descricao textual do modelo do Clusterer
+   * 
    * @return the Clusterer's model as a String
+   *         o modelo Clusterer como uma String 
    */
   public String toString() {
     String ignored = (m_ignoredString == null)
@@ -218,10 +293,18 @@ class WekaScoringClusterer extends WekaScoringModel {
   /**
    * Batch scoring method.
    * 
+   * PT-BR
+   * 
+   * Lote do metodo scoring
+   * 
    * @param insts the instances to score
+   *              a instancia para marcar
    * @return an array of predictions (index of the predicted class label for
    * each instance)
+   *         uma matriz de previsoes (indice do label de classe previsto para
+   * cada instancia)
    * @throws Exception if a problem occurs
+   *                   se ocorrer um erro
    */
   public double[] classifyInstances(Instances insts) throws Exception {
     double[][] preds = distributionsForInstances(insts);
@@ -243,9 +326,16 @@ class WekaScoringClusterer extends WekaScoringModel {
   /**
    * Batch scoring method
    * 
+   * PT-BR
+   * 
+   * Fornada de metodos scoring
+   * 
    * @param insts the instances to get predictions for
+   *              a instancia para obter previsoes 
    * @return an array of probability distributions, one for each instance
+   *         uma matriz de prababilidade de distribuicao, uma para cada instancia
    * @throws Exception if a problem occurs
+   *                   se ocorrer um erro
    */
   public double[][] distributionsForInstances(Instances insts) throws Exception {
     if (!isBatchPredictor()) {
@@ -259,8 +349,15 @@ class WekaScoringClusterer extends WekaScoringModel {
    * Returns true if the encapsulated Weka model can produce 
    * predictions in a batch.
    * 
+   * PT-BR
+   * 
+   * Retorna verdadeiro se o encapsulamento do modelo Weka pode produzir
+   * previsoes em um lote.
+   * 
    * @return true if the encapsulated Weka model can produce 
    * predictions in a batch
+   *              se o encapsulamento do modelo Weka pode produzir
+   * previsoes em um lote.
    */
   public boolean isBatchPredictor() {
     return (m_model instanceof BatchPredictor);

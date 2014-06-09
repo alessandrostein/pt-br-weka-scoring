@@ -284,7 +284,7 @@ public abstract class WekaScoringModel implements Serializable {
    * Metodo statico para criar uma instancia para uma subclasse adequeada para 
    * WekaScoringModel dado um modelo Weka.
    * 
-   * @param model a Weka model
+   * @param m++odel a Weka model
    *              uma modelo Weka
    * @return an appropriate WekaScoringModel for this type of Weka model
    *         uma adequada WekaScoringModel para este tipo do modelo Weka   
